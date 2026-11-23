@@ -47,6 +47,11 @@ public class MainActivity extends Activity {
         choose.setText("Seleccionar carpeta de medios");
         choose.setOnClickListener(v -> chooseFolder()); root.addView(choose);
 
+        Button camera = new Button(this);
+        camera.setText("Comprobar conexión GoPro MAX");
+        camera.setOnClickListener(v -> checkCamera());
+        root.addView(camera);
+
         TextView hint = new TextView(this);
         hint.setText("Selecciona una carpeta local, por ejemplo DCIM. Android pedirá permiso para acceder a ella.");
         hint.setTextColor(0xFFB8C7D9); hint.setTextSize(13);
@@ -61,6 +66,38 @@ public class MainActivity extends Activity {
         footer.setTextColor(0xFF8FA3B8); footer.setTextSize(11);
         footer.setGravity(Gravity.CENTER); footer.setPadding(0, dp(12), 0, 0);
         root.addView(footer); setContentView(root);
+    }
+
+    private void checkCamera() {
+        status.setText("Comprobando GoPro MAX en 10.5.5.9...");
+        status.setTextColor(0xFFFFD166);
+        new Thread(() -> {
+            try {
+                org.json.JSONObject json = GoProMaxClient.getMediaList();
+                org.json.JSONArray media = json.optJSONArray("media");
+                int total = 0;
+                if (media != null) {
+                    for (int i = 0; i < media.length(); i++) {
+                        org.json.JSONObject folder = media.optJSONObject(i);
+                        if (folder != null) {
+                            org.json.JSONArray fs = folder.optJSONArray("fs");
+                            if (fs != null) total += fs.length();
+                        }
+                    }
+                }
+                final int found = total;
+                runOnUiThread(() -> {
+                    status.setText("GoPro MAX responde. Elementos detectados: " + found
+                            + ". La descarga y Drive aún no están integrados.");
+                    status.setTextColor(0xFF9FE3B0);
+                });
+            } catch (Exception e) {
+                runOnUiThread(() -> {
+                    status.setText("No se pudo contactar con la GoPro. Conecta el móvil a la Wi-Fi de la cámara y mantente conectado aunque indique «sin Internet». Detalle: " + e.getMessage());
+                    status.setTextColor(0xFFFF8A80);
+                });
+            }
+        }).start();
     }
 
     private void chooseFolder() {
