@@ -1,25 +1,24 @@
 # MAX 360 CLOUD
 
-Proyecto Android para transferir medios de una GoPro MAX (2019) a Google Drive.
+Aplicación Android para investigar y construir una sincronización de medios de GoPro MAX (2019) con Google Drive.
 
-## Estado real
-- Android app base y workflow APK: incluidos.
-- Exploración de archivos locales: incluida.
-- Primera prueba de conexión HTTP con la GoPro: incluida en código. La cámara debe estar encendida y el móvil conectado manualmente a su Wi-Fi; se consulta `10.5.5.9:8080/gp/gpMediaList`.
-- Descarga de medios y subida a Drive: todavía pendientes de implementar y probar.
-- OAuth de Drive: requiere configurar un cliente OAuth propio para el identificador de esta app y firmar/registrar su SHA-1. No se deben subir contraseñas ni tokens al repositorio.
+## Estado de esta versión
 
-## Probar la GoPro
-1. Enciende la MAX y activa su conexión inalámbrica / modo de conexión con la aplicación.
-2. En Android, abre Ajustes > Wi-Fi y conéctate a la red de la GoPro.
-3. Abre MAX 360 CLOUD y pulsa «Comprobar GoPro».
-4. Si Android muestra que la red no tiene Internet, elige permanecer conectado a esa red.
-5. La prueba mostrará si la API de medios responde.
+Esta es la primera base compilable de Android. Permite seleccionar una carpeta local (por ejemplo, la carpeta de medios de GoPro Quik) y examinar fotos y vídeos compatibles. **Aún no descarga directamente desde la GoPro MAX ni sube archivos a Google Drive.** No se debe considerar terminada la sincronización automática.
 
-La API gpControl/media de la MAX original está documentada por la comunidad; es no oficial y puede variar según firmware. La API oficial Open GoPro actual no incluye la MAX original (2019) en su tabla de compatibilidad.
+## Requisitos
+- Android 8.0 (API 26) o superior.
+- Android Studio / JDK 17.
 
 ## Compilar
-GitHub Actions compila un APK de depuración y lo publica como artefacto.
+Cada push a `main` ejecuta GitHub Actions y publica el APK de depuración como artefacto en la ejecución del workflow.
+
+## Hitos técnicos
+1. Investigar y validar el protocolo Wi-Fi de la GoPro MAX original (2019); no confundirlo con MAX2/Open GoPro.
+2. Implementar descarga inalámbrica y reanudación segura.
+3. Integrar Google Drive mediante OAuth oficial y consentimiento del usuario.
+4. Añadir sincronización en segundo plano, control de duplicados y reintentos.
+5. Probar en dispositivos Android reales y documentar límites de batería, Wi-Fi y datos móviles.
 
 ## Privacidad
-La aplicación no pide contraseñas de GoPro ni de Google en el chat. El acceso a Drive se añadirá con OAuth de Google, autorizado por el usuario en el móvil.
+No se solicitan contraseñas. No hay claves privadas ni tokens incluidos en el repositorio. La futura integración de Drive debe usar OAuth y credenciales configuradas por el desarrollador en Google Cloud.
