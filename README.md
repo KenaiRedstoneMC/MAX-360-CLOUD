@@ -2,26 +2,23 @@
 
 Aplicación Android para investigar y construir una sincronización de medios de GoPro MAX (2019) con Google Drive.
 
-## Estado actual
+## Estado de esta versión
 
-Esta primera base crea una app Android y permite seleccionar una carpeta local de medios mediante el selector seguro de Android. **Todavía no descarga archivos directamente desde la GoPro ni los sube a Google Drive.** Esas dos integraciones requieren desarrollo y pruebas reales; no se presentan como funciones terminadas.
+Esta es la primera base compilable de Android. Permite seleccionar una carpeta local (por ejemplo, la carpeta de medios de GoPro Quik) y examinar fotos y vídeos compatibles. **Aún no descarga directamente desde la GoPro MAX ni sube archivos a Google Drive.** No se debe considerar terminada la sincronización automática.
 
 ## Requisitos
-
 - Android 8.0 (API 26) o superior.
-- Android Studio / JDK 17 para compilar localmente.
+- Android Studio / JDK 17.
 
-## Compilación
+## Compilar
+Cada push a `main` ejecuta GitHub Actions y publica el APK de depuración como artefacto en la ejecución del workflow.
 
-GitHub Actions compila automáticamente el APK de depuración al hacer push. El archivo se publica como artefacto de la ejecución del workflow.
-
-## Próximos hitos
-
-1. Validar la conexión Wi-Fi y el protocolo de transferencia de la GoPro MAX 2019.
-2. Implementar transferencia local robusta, reintentos y detección de duplicados.
-3. Integrar Google Drive mediante OAuth oficial, sin pedir ni almacenar contraseñas.
-4. Probar sincronización en segundo plano y documentar las limitaciones de Android.
+## Hitos técnicos
+1. Investigar y validar el protocolo Wi-Fi de la GoPro MAX original (2019); no confundirlo con MAX2/Open GoPro.
+2. Implementar descarga inalámbrica y reanudación segura.
+3. Integrar Google Drive mediante OAuth oficial y consentimiento del usuario.
+4. Añadir sincronización en segundo plano, control de duplicados y reintentos.
+5. Probar en dispositivos Android reales y documentar límites de batería, Wi-Fi y datos móviles.
 
 ## Privacidad
-
-La app no contiene credenciales de Google ni claves privadas. La futura conexión a Drive debe realizarse mediante el inicio de sesión OAuth del propio usuario.
+No se solicitan contraseñas. No hay claves privadas ni tokens incluidos en el repositorio. La futura integración de Drive debe usar OAuth y credenciales configuradas por el desarrollador en Google Cloud.
